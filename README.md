@@ -1,9 +1,8 @@
-# Not DIY project temlplate
+# Perisso
 
 Steps:
 
 - git clone the project
-- update port in package.json and /src/utils/routerWebflow.js
 - create https certificates (needed so Vite localhost would work in Safari) https://chatgpt.com/share/67c97014-a5dc-8009-8e05-f8afe1d09137
   - `brew install mkcert` (only once per device)
   - `mkcert -install` (only once per device)
@@ -14,7 +13,6 @@ Steps:
 - run `npm update`
 
 commands:
-
 - `npm run dev`
 - `npm run build`
 
@@ -22,5 +20,4 @@ the project suports multiple build files, e. g. to to have separate scripts in `
 
 to update the prod file, manually copy it from src/dist, and paste to prod. Good practice is to keep the versioning. Once the file is updated, remember to also purge the cache in the CDN ([jsdelivr link](https://www.jsdelivr.com/github)).
 
-the code from routerWebflow.js allows to route the script based on the prod / staging, and on if the localhost:3000 is up.
-
+the code from routerWebflow.js allows to route the script based on the prod / staging, and on if the localhost:3010 is up.
