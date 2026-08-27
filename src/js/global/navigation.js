@@ -21,7 +21,11 @@ const navbar = {
 		for (const link of this.links) {
 			tl.set(link, { marginLeft: `${randomStagger()}rem` });
 		}
-		tl.to(this.links, { marginLeft: "0rem" });
+		tl.to(this.links, {
+			marginLeft: "0rem",
+			ease: "power2.inOut",
+			duration: 0.3,
+		});
 		tl.to(this.menuOpenIcon, { y: "110%" }, "<");
 		tl.to(this.menuCloseIcon, { y: "0%" }, "<");
 		this.isMenuOpen = true;
@@ -30,7 +34,15 @@ const navbar = {
 	closeMenu(immediate = false) {
 		const tl = gsap.timeline();
 		for (const link of this.links) {
-			tl.to(link, { marginLeft: `${randomStagger()}rem` }, "<");
+			tl.to(
+				link,
+				{
+					marginLeft: `${randomStagger()}rem`,
+					ease: "power2.inOut",
+					duration: 0.3,
+				},
+				"<",
+			);
 		}
 		tl.set(this.linksWrapper, { display: "none" });
 		tl.set(this.links, { marginLeft: "0rem" });
@@ -72,6 +84,16 @@ const navbar = {
 		};
 
 		window.addEventListener("resize", resizeHandler);
+	},
+	updateActiveLink() {
+		const currentPath = window.location.pathname;
+		for (const link of this.links) {
+			if (link.getAttribute("href") === currentPath) {
+				link.classList.add("w--current");
+			} else {
+				link.classList.remove("w--current");
+			}
+		}
 	},
 	init() {
 		if (window.innerWidth < 768) {

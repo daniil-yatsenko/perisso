@@ -7,7 +7,7 @@ export { lenisMain };
 
 const globalInit = async () => {
 	navbar.init();
-	componentsInit(document);
+	// componentsInit(document);
 	console.log("globalInit");
 };
 

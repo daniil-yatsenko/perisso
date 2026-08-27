@@ -1,45 +1,61 @@
 import barba from "@barba/core";
+import { ScrollTrigger } from "gsap/ScrollTrigger.js";
 import gsap from "gsap";
 import { lenisMain } from "./globalInit.js";
 import { navbar } from "./navigation.js";
+import { componentsInit, componentsCleanup } from "../components/index.js";
+import { homeHeroInit, homeHeroCleanup } from "../pages/home.js";
+import { enterTransition, leaveTransition } from "./transitions/default.js";
 
 export function initBarba() {
 	console.log("initBarba");
 	barba.init({
-		// debug: true, // Remove in production
+		debug: true, // Remove in production
 		transitions: [
 			{
 				name: "default-transition",
-				once(data) {},
+				beforeOnce(data) {},
+				async once(data) {
+					componentsInit(data.next.container);
+					await enterTransition();
+				},
 				async leave(data) {
+					if (navbar.isSetToMobile && navbar.isMenuOpen) {
+						navbar.closeMenu();
+					}
+					await leaveTransition();
 					// Close menu first, wait for animation to complete
 					// await navbar.closeMenu();
 				},
 				afterLeave(data) {
-					// console.log("after leave");
+					console.log("after leave");
 					componentsCleanup(data.current.container);
 					lenisMain.scrollTo(0, { immediate: true });
 				},
-				enter(data) {
-					componentsInit(data.next.container);
-				},
+				beforeEnter(data) {},
+
 				afterEnter() {
 					setTimeout(() => {
 						lenisMain.resize();
 						ScrollTrigger.refresh();
 					}, 50);
+					navbar.updateActiveLink();
+				},
+				async after(data) {
+					componentsInit(data.next.container);
+					await enterTransition();
 				},
 			},
 		],
 		views: [
 			{
 				namespace: "home",
-				beforeEnter() {},
+				afterOnce() {},
+				beforeEnter(data) {
+					homeHeroInit(data.next.container);
+				},
+				afterEnter(data) {},
 				beforeLeave() {},
-			},
-			{
-				namespace: "password",
-				beforeEnter(data) {},
 			},
 		],
 	});
