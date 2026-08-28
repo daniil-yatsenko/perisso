@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { lenisMain } from "./globalInit.js";
 import { navbar } from "./navigation.js";
 import { componentsInit, componentsCleanup } from "../components/index.js";
-import { homeHeroInit, homeHeroCleanup } from "../pages/home.js";
+import { homeHeroInit, homeHeroCleanup } from "../pages/home/index.js";
 import { enterTransition, leaveTransition } from "./transitions/default.js";
 
 export function initBarba() {

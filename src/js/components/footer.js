@@ -22,56 +22,69 @@ if (vw < 768) multiplier = 5;
 if (vw < 600) multiplier = 6;
 if (vw < 400) multiplier = 12;
 
+// holds the gsap.context for the currently mounted footer, so footerCleanup
+// can revert exactly what footerInit created (tweens, timelines, ScrollTriggers)
+let ctx = null;
+
 const footerInit = (page) => {
 	gsap.registerPlugin(ScrollTrigger);
 	const footer = page.querySelector(".footer");
 	if (!footer) return;
 
-	const bgImage = footer.querySelector(".image-absolute");
+	ctx = gsap.context(() => {
+		const bgImage = footer.querySelector(".image-absolute");
 
-	gsap.to(bgImage, {
-		scale: 1.1,
-		ease: "none",
-		scrollTrigger: {
-			trigger: footer,
-			start: "top bottom",
-			end: "bottom bottom",
-			scrub: true,
-		},
-	});
-
-	const logoWrapper = footer.querySelector(".footer_logo-wrapper");
-	const paths = logoWrapper.querySelectorAll("path");
-
-	const slug = window.location.pathname;
-
-	// configure stagger based on current page slug
-	let configToUse = logoStaggerConfig["/"];
-	if (logoStaggerConfig[slug]) configToUse = logoStaggerConfig[slug];
-
-	const tl = gsap.timeline({
-		scrollTrigger: {
-			trigger: footer,
-			start: "center bottom",
-			end: "bottom bottom",
-			scrub: 1,
-		},
-	});
-
-	paths.forEach((path, index) => {
-		const stagger = configToUse[index] * multiplier;
-		tl.from(
-			path,
-			{
-				y: `${-stagger}vw`,
-				duration: 1,
-				ease: "linear",
+		gsap.to(bgImage, {
+			scale: 1.1,
+			ease: "none",
+			scrollTrigger: {
+				trigger: footer,
+				start: "top bottom",
+				end: "bottom bottom",
+				scrub: true,
 			},
-			"<",
-		);
-	});
+		});
+
+		const logoWrapper = footer.querySelector(".footer_logo-wrapper");
+		const paths = logoWrapper.querySelectorAll("path");
+
+		const slug = window.location.pathname;
+
+		// configure stagger based on current page slug
+		let configToUse = logoStaggerConfig["/"];
+		if (logoStaggerConfig[slug]) configToUse = logoStaggerConfig[slug];
+
+		const tl = gsap.timeline({
+			scrollTrigger: {
+				trigger: footer,
+				start: "center bottom",
+				end: "bottom bottom",
+				scrub: 1,
+			},
+		});
+
+		paths.forEach((path, index) => {
+			const stagger = configToUse[index] * multiplier;
+			tl.from(
+				path,
+				{
+					y: `${-stagger}vw`,
+					duration: 1,
+					ease: "linear",
+				},
+				"<",
+			);
+		});
+	}, footer);
 };
 
-const footerCleanup = (page) => {};
+const footerCleanup = () => {
+	if (!ctx) return;
+	// reverts every tween/timeline created inside the context and kills
+	// their associated ScrollTriggers; any listeners added via ctx.add()
+	// would be cleaned up too
+	ctx.revert();
+	ctx = null;
+};
 
 export { footerInit, footerCleanup };

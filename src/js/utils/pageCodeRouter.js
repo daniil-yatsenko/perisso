@@ -2,7 +2,7 @@
 // Ensure the main page wrapper has a unique class with data-page-name attribute
 // to avoid animation code leakage across different pages.
 
-import { homeInit } from "../pages/home.js";
+import { homeInit } from "../pages/home/index.js";
 
 export function initPageRouter() {
   const pageWrapper = document.querySelector("[data-page-name]");
