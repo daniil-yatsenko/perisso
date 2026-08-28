@@ -1,4 +1,5 @@
 import { gsap } from "gsap";
+import { lenisMain } from "./globalInit";
 
 var randomStagger = gsap.utils.random(-5, 5, 0.5, true);
 
@@ -15,15 +16,18 @@ const navbar = {
 	isSetToMobile: false,
 	eventListenersMap: new WeakMap(),
 
-	openMenu(immediate = false) {
+	openMenu() {
 		const tl = gsap.timeline();
-		tl.set(this.linksWrapper, { display: "flex" });
+		lenisMain.stop();
+
 		for (const link of this.links) {
 			tl.set(link, { marginLeft: `${randomStagger()}rem` });
 		}
+		tl.set(this.linksWrapper, { display: "flex", y: "-100%" });
+		tl.to(this.linksWrapper, { y: "0%", duration: 0.4, ease: "circ.inOut" });
 		tl.to(this.links, {
 			marginLeft: "0rem",
-			ease: "power2.inOut",
+			ease: "circ.inOut",
 			duration: 0.3,
 		});
 		tl.to(this.menuOpenIcon, { y: "110%" }, "<");
@@ -31,23 +35,33 @@ const navbar = {
 		this.isMenuOpen = true;
 		return tl;
 	},
-	closeMenu(immediate = false) {
+	closeMenu(fast = false) {
 		const tl = gsap.timeline();
 		for (const link of this.links) {
 			tl.to(
 				link,
 				{
 					marginLeft: `${randomStagger()}rem`,
-					ease: "power2.inOut",
+					ease: "circ.inOut",
 					duration: 0.3,
 				},
 				"<",
 			);
 		}
-		tl.set(this.linksWrapper, { display: "none" });
+		if (!fast) {
+			// skipped when fast is true, AKA for page transition
+			tl.to(this.linksWrapper, {
+				y: "-100%",
+				duration: 0.3,
+				ease: "circ.inOut",
+			});
+		}
+		tl.set(this.linksWrapper, { display: "none", y: "0%" });
 		tl.set(this.links, { marginLeft: "0rem" });
 		tl.to(this.menuOpenIcon, { y: "0%" });
 		tl.to(this.menuCloseIcon, { y: "-110%" }, "<");
+
+		lenisMain.start();
 		this.isMenuOpen = false;
 		return tl;
 	},

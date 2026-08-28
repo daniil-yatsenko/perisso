@@ -34,14 +34,22 @@ const footerInit = (page) => {
 	ctx = gsap.context(() => {
 		const bgImage = footer.querySelector(".image-absolute");
 
+		// bigger scale for bg image & longer scrub for perisso logo on mobile
+		let scale = 1.1;
+		let scrub = 1;
+		if (window.innerWidth < 767) {
+			scale = 1.2;
+			scrub = 2;
+		}
+
 		gsap.to(bgImage, {
-			scale: 1.1,
+			scale: scale,
 			ease: "none",
 			scrollTrigger: {
 				trigger: footer,
 				start: "top bottom",
 				end: "bottom bottom",
-				scrub: true,
+				scrub: scrub,
 			},
 		});
 
@@ -59,7 +67,7 @@ const footerInit = (page) => {
 				trigger: footer,
 				start: "center bottom",
 				end: "bottom bottom",
-				scrub: 1,
+				scrub: scrub,
 			},
 		});
 

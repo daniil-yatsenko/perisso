@@ -20,8 +20,9 @@ export function initBarba() {
 					await enterTransition();
 				},
 				async leave(data) {
+					lenisMain.stop();
 					if (navbar.isSetToMobile && navbar.isMenuOpen) {
-						navbar.closeMenu();
+						navbar.closeMenu(true); // true enables fast menu close
 					}
 					await leaveTransition();
 					// Close menu first, wait for animation to complete
@@ -30,7 +31,9 @@ export function initBarba() {
 				afterLeave(data) {
 					console.log("after leave");
 					componentsCleanup(data.current.container);
+					lenisMain.start();
 					lenisMain.scrollTo(0, { immediate: true });
+					lenisMain.stop();
 				},
 				beforeEnter(data) {},
 
@@ -44,6 +47,7 @@ export function initBarba() {
 				async after(data) {
 					componentsInit(data.next.container);
 					await enterTransition();
+					lenisMain.start();
 				},
 			},
 		],
