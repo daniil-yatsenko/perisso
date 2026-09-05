@@ -5,6 +5,7 @@ import { lenisMain } from "./globalInit.js";
 import { navbar } from "./navigation.js";
 import { componentsInit, componentsCleanup } from "../components/index.js";
 import { homeHeroInit, homeHeroCleanup } from "../pages/home/index.js";
+import { contactInit } from "../pages/contact.js";
 import { enterTransition, leaveTransition } from "./transitions/default.js";
 
 export function initBarba() {
@@ -60,6 +61,12 @@ export function initBarba() {
 				},
 				afterEnter(data) {},
 				beforeLeave() {},
+			},
+			{
+				namespace: "contact",
+				beforeEnter(data) {
+					contactInit(data.next.container, data);
+				},
 			},
 		],
 	});
