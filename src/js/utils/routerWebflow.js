@@ -27,16 +27,13 @@
         if (response.ok) {
           loadScript(`https://localhost:${port}/@vite/client`, "module", true);
           loadScript(`https://localhost:${port}/js/index.js`, "module", true);
-          console.log("using localhost scripts");
         } else {
           // if localhost is not available, use staging scripts.
           loadScript(srcStage);
-          console.log("using CDN staging scripts");
         }
       })
       .catch(() => {
         loadScript(srcStage);
-        console.log("using CDN staging scripts");
       });
   }
 })();

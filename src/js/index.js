@@ -4,4 +4,3 @@ import { initBarba } from "./global/barba.js";
 
 globalInit();
 initBarba();
-console.log("Hello, Vite!");

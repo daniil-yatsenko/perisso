@@ -14,8 +14,6 @@ let splitText = null;
 let playTimeoutId = null;
 
 const homeHeroInit = (page = document) => {
-	console.log("home hero init");
-
 	//
 	// svg animation
 	//
@@ -31,7 +29,7 @@ const homeHeroInit = (page = document) => {
 			const tl1 = gsap.timeline({ paused: true, repeat: -1, yoyo: true });
 			heroMorphSteps.tl1.forEach((step) => tl1.to(path1, step));
 
-			tl1.play();
+			// tl1.play();
 
 			//
 			// Heading animation

@@ -9,9 +9,8 @@ import { contactInit } from "../pages/contact.js";
 import { enterTransition, leaveTransition } from "./transitions/default.js";
 
 export function initBarba() {
-	console.log("initBarba");
 	barba.init({
-		debug: true, // Remove in production
+		debug: false, // Remove in production
 		transitions: [
 			{
 				name: "default-transition",
@@ -30,7 +29,6 @@ export function initBarba() {
 					// await navbar.closeMenu();
 				},
 				afterLeave(data) {
-					console.log("after leave");
 					componentsCleanup(data.current.container);
 					lenisMain.start();
 					lenisMain.scrollTo(0, { immediate: true });
