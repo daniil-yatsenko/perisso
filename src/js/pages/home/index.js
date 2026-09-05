@@ -26,20 +26,12 @@ const homeHeroInit = (page = document) => {
 
 	ctx = gsap.context(
 		() => {
-			const path1 = svg.querySelector("[data-path-1]");
-			const path2 = svg.querySelector("[data-path-2]");
-			const path3 = svg.querySelector("[data-path-3]");
+			const path1 = svg.querySelector("path");
 
 			const tl1 = gsap.timeline({ paused: true, repeat: -1, yoyo: true });
 			heroMorphSteps.tl1.forEach((step) => tl1.to(path1, step));
 
-			const tl2 = gsap.timeline({ paused: true, repeat: -1, yoyo: true });
-			heroMorphSteps.tl2.forEach((step) => tl2.to(path2, step));
-
-			const tl3 = gsap.timeline({ paused: true, repeat: -1, yoyo: true });
-			heroMorphSteps.tl3.forEach((step) => tl3.to(path3, step));
-
-			[tl1, tl2, tl3].forEach((tl) => tl.play());
+			tl1.play();
 
 			//
 			// Heading animation
